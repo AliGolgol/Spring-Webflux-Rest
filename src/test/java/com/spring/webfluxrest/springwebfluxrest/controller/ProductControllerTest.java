@@ -36,7 +36,7 @@ class ProductControllerTest {
                 .uri("/api/v1/products")
                 .exchange()
                 .expectBodyList(Product.class)
-                .hasSize(3);
+                .hasSize(2);
     }
 
     @Test
