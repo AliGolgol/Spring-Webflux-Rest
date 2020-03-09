@@ -65,4 +65,19 @@ class ProductControllerTest {
                 .expectStatus()
                 .isCreated();
     }
+
+    @Test
+    void testUpdateProduct() {
+        BDDMockito.given(productRepository.save(any(Product.class)))
+                .willReturn(Mono.just(Product.builder().build()));
+
+        Mono<Product> productMono=Mono.just(Product.builder().name("case").build());
+
+        webTestClient.put()
+                .uri("/api/v1/products/test")
+                .body(productMono,Product.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+    }
 }

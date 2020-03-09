@@ -31,4 +31,10 @@ public class ProductController {
     Mono<Void> createProduct(@RequestBody Publisher<Product> productPublisher){
         return productRepository.saveAll(productPublisher).then();
     }
+
+    @PutMapping("/api/v1/products/{id}")
+    Mono<Product> updateProduct(@PathVariable String id,@RequestBody Product product){
+        product.setId(id);
+        return productRepository.save(product);
+    }
 }
