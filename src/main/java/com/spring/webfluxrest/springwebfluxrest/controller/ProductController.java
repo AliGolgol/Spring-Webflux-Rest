@@ -2,9 +2,9 @@ package com.spring.webfluxrest.springwebfluxrest.controller;
 
 import com.spring.webfluxrest.springwebfluxrest.domain.Product;
 import com.spring.webfluxrest.springwebfluxrest.repository.ProductRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.reactivestreams.Publisher;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -24,5 +24,11 @@ public class ProductController {
     @GetMapping("/api/v1/products/{id}")
     Mono<Product> getById(@PathVariable String id){
         return productRepository.findById(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/api/v1/products")
+    Mono<Void> createProduct(@RequestBody Publisher<Product> productPublisher){
+        return productRepository.saveAll(productPublisher).then();
     }
 }

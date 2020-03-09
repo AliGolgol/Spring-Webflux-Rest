@@ -6,12 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
+import org.reactivestreams.Publisher;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static org.hamcrest.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
+
 
 class ProductControllerTest {
 
@@ -48,5 +49,20 @@ class ProductControllerTest {
                 .uri("/api/v1/products/id")
                 .exchange()
                 .expectBody(Product.class);
+    }
+
+    @Test
+    void testCreateProduct(){
+        BDDMockito.given(productRepository.saveAll(any(Publisher.class)))
+                .willReturn(Flux.just(Product.builder().name("keyword").build()));
+
+        Mono<Product> productMono=Mono.just(Product.builder().name("monitor").build());
+
+        webTestClient.post()
+                .uri("/api/v1/products")
+                .body(productMono,Product.class)
+                .exchange()
+                .expectStatus()
+                .isCreated();
     }
 }
