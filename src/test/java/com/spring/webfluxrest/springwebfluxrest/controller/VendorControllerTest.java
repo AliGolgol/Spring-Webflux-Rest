@@ -1,6 +1,5 @@
 package com.spring.webfluxrest.springwebfluxrest.controller;
 
-import ch.qos.logback.core.db.DBAppenderBase;
 import com.spring.webfluxrest.springwebfluxrest.domain.Vendor;
 import com.spring.webfluxrest.springwebfluxrest.repository.VendorRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +11,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
 
 class VendorControllerTest {
 
@@ -81,5 +81,43 @@ class VendorControllerTest {
                 .exchange()
                 .expectStatus()
                 .isOk();
+    }
+
+    @Test
+    void testPatchWithChange() {
+        BDDMockito.given(vendorRepository.findById(anyString()))
+                .willReturn(Mono.just(Vendor.builder().build()));
+
+        BDDMockito.given(vendorRepository.save(Vendor.builder().build()))
+                .willReturn(Mono.just(Vendor.builder().build()));
+
+        Mono<Vendor> vendorMono=Mono.just(Vendor.builder().firstName("some name").build());
+
+        webTestClient.put()
+                .uri("/api/v1/vendors/id")
+                .body(vendorMono,Vendor.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+
+        verify(vendorRepository).save(any());
+    }
+    @Test
+    void testPatchWithNoChange() {
+        BDDMockito.given(vendorRepository.findById(anyString()))
+                .willReturn(Mono.just(Vendor.builder().build()));
+
+        BDDMockito.given(vendorRepository.save(Vendor.builder().build()))
+                .willReturn(Mono.just(Vendor.builder().build()));
+
+        Mono<Vendor> vendorMono=Mono.just(Vendor.builder().build());
+
+        webTestClient.put()
+                .uri("/api/v1/vendors/id")
+                .body(vendorMono,Vendor.class)
+                .exchange()
+                .expectStatus()
+                .isOk();
+
     }
 }
