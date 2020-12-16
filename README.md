@@ -4,7 +4,7 @@
 [![<ORG_NAME>](https://circleci.com/<VCS>/<ORG_NAME>/<PROJECT_NAME>.svg?style=svg)](<LINK>)
 
 # Example:
-[![CircleCI](https://circleci.com/gh/AGG/Spring-Webflux-Rest.svg?style=svg)](https://app.circleci.com/pipelines/github/AliGolgol/Spring-Webflux-Rest)
+[![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://app.circleci.com/pipelines/github/AliGolgol/Spring-Webflux-Rest)
 
 # Example for specific branch:
 [![CircleCI](https://circleci.com/gh/circleci/circleci-docs/tree/teesloane-patch-5.svg?style=svg)](https://app.circleci.com/pipelines/github/AliGolgol/Spring-Webflux-Rest)
